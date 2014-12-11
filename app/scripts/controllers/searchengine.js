@@ -19,8 +19,8 @@ angular.module('indexingApp')
         for (var pos = 0; pos < words.length; pos++) {
           var word = words[pos];
           var data = {
-            on: n+1,
-            at: pos+1 
+            page: n+1,
+            position: pos+1 
           }; 
           if (db[word]) {
             db[word].push(data);

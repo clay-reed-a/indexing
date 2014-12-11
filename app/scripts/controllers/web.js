@@ -10,8 +10,8 @@
 angular.module('indexingApp')
   .controller('WebCtrl', function ($scope) {
     $scope.pages = [
-      'the cat sat on the mat',
-      'the dog stood on the mat',
+      'a cat sat on the mat',
+      'a dog stood on the mat',
       'the cat stood while the dog sat'
     ];
 

@@ -10,20 +10,26 @@
     <h2>A Search Engine</h2>
     <input>
     <h3>Its Database</h3>
-    <ul>
-      <li ng-repeat="(word, entry) in database">
-        <section>
-          <h3>{{word}}</h3>
-          <table class="table">
-          <tr><th>At Position</th><th>On Page</th></tr> 
-          <tr ng-repeat="data in entry">
-            <td ng-repeat="(key, val) in data">
-              {{val}}
-            </td>
-          </tr>
-          </table>
-        </section>
-      </li>
-    </ul>
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Words</th><th>Page</th><th>Position</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat-start="(word, entry) in database">
+          <th>{{word}}</th><th></th><th></th>
+        </tr>
+        <tr ng-repeat="data in entry">
+          <td>
+          
+          </td>
+          <td ng-repeat="(key, val) in data">
+            {{val}}
+          </td>
+        </tr>
+        <tr ng-repeat-end ng-hide="true"></tr>
+      </tbody>
+    </table>
   </div>
 </div>
