@@ -13,8 +13,8 @@
     <ul>
       <li ng-repeat="(word, entry) in database">
         {{word}} 
-        <span ng-repeat="occurence in entry">
-          <span ng-repeat="(key, val) in occurence">
+        <span ng-repeat="data in entry">
+          <span ng-repeat="(key, val) in data">
             {{key}}: {{val}}
           </span>
         </span>

@@ -18,15 +18,15 @@ angular.module('indexingApp')
         var words = page.split(' '); 
         for (var pos = 0; pos < words.length; pos++) {
           var word = words[pos];
-          var info = {
+          var data = {
             pageNo: n+1,
             position: pos+1 
           }; 
           if (db[word]) {
-            db[word].push(info);
+            db[word].push(data);
           } else {
             var dbEntry = [];
-            dbEntry.push(info);
+            dbEntry.push(data);
             db[word] = dbEntry;  
           }
         }
