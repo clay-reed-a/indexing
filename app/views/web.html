@@ -1,0 +1,24 @@
+<div ng-controller="WebCtrl">
+  <h2>All the Pages on the Internet</h2>
+  <ol>
+    <li ng-repeat="page in pages">"{{page}}"</li>
+  </ol>
+  <h3>Write a Web Page</h3>
+  <textarea ng-model="newPage"></textarea>
+  <button ng-click="authorWebPage(newPage)">Host It!</button>
+  <div ng-controller="SearchengineCtrl">
+    <h2>A Search Engine</h2>
+    <input>
+    <h3>Its Database</h3>
+    <ul>
+      <li ng-repeat="(word, entry) in database">
+        {{word}} 
+        <span ng-repeat="occurence in entry">
+          <span ng-repeat="(key, val) in occurence">
+            {{key}}: {{val}}
+          </span>
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>
