@@ -13,13 +13,13 @@ angular.module('indexingApp')
 
     var indexWebPages = function(theWeb) {
       var db = {}; 
-      for (var ip = 0; ip < theWeb.length; ip++) {
-        var page = theWeb[ip];
+      for (var n = 0; n < theWeb.length; n++) {
+        var page = theWeb[n];
         var words = page.split(' '); 
         for (var pos = 0; pos < words.length; pos++) {
           var word = words[pos];
           var info = {
-            ipAddress: ip+1,
+            pageNo: n+1,
             position: pos+1 
           }; 
           if (db[word]) {
