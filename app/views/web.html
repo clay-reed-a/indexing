@@ -12,12 +12,17 @@
     <h3>Its Database</h3>
     <ul>
       <li ng-repeat="(word, entry) in database">
-        {{word}} 
-        <span ng-repeat="data in entry">
-          <span ng-repeat="(key, val) in data">
-            {{key}}: {{val}}
-          </span>
-        </span>
+        <section>
+          <h3>{{word}}</h3>
+          <table class="table">
+          <tr><th>At Position</th><th>On Page</th></tr> 
+          <tr ng-repeat="data in entry">
+            <td ng-repeat="(key, val) in data">
+              {{val}}
+            </td>
+          </tr>
+          </table>
+        </section>
       </li>
     </ul>
   </div>
