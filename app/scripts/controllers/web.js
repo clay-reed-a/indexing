@@ -17,6 +17,7 @@ angular.module('indexingApp')
 
 
     $scope.authorWebPage = function(newPage) {
+      newPage = newPage.toLowerCase();
       $scope.pages.push(newPage);
     };
 

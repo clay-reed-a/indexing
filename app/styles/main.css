@@ -23,3 +23,8 @@ li.web-page div p {
 section#author-pages {
   clear: both;
 }
+.web__half {
+  width: 50%;
+  box-sizing: border-box;
+  float: left;
+}
