@@ -73,10 +73,10 @@ angular.module('indexingApp')
     $scope.$on('pages-added', function() {  
       $scope.database = indexWebPages($scope.$parent.pages);
       $scope.databaseIndex = Object.keys($scope.database);
-      if (!$scope.query) {
-        $scope.queryWords = $scope.databaseIndex;
-      } else {
+      if ($scope.query) {
         $scope.searchWeb($scope.query);
+      } else {
+        $scope.queryWords = $scope.databaseIndex;
       }       
     });
   });
