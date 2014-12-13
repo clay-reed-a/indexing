@@ -21,8 +21,6 @@ angular.module('indexingApp')
     };
 
     $scope.$watchCollection('pages', function(newVal, oldVal) {
-      console.log(newVal);
-      console.log(oldVal);
       if (newVal !== oldVal) {
         $scope.$broadcast('pages-added');
       }

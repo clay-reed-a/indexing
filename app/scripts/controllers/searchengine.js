@@ -31,7 +31,6 @@ angular.module('indexingApp')
           }
         }
       }
-      console.log(db);
       return db; 
     };
 

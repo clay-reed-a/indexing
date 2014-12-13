@@ -1,11 +1,19 @@
 <div ng-controller="WebCtrl">
-  <h2>All the Pages on the Internet</h2>
-  <ol>
-    <li ng-repeat="page in pages">"{{page}}"</li>
-  </ol>
-  <h3>Write a Web Page</h3>
-  <textarea ng-model="newPage"></textarea>
-  <button ng-click="authorWebPage(newPage)">Host It!</button>
+  <section id="pages">
+    <h2>All the Pages on the Internet</h2>
+    <ol>
+      <li class="web-page" ng-repeat="page in pages">
+        <div>
+          <p>{{page}}</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+  <section id="author-pages">
+    <h3>Write a Web Page</h3>
+    <textarea ng-model="newPage"></textarea>
+    <button ng-click="authorWebPage(newPage)">Host It!</button>
+  </section>
   <div ng-controller="SearchengineCtrl">
     <h2>A Search Engine</h2>
     <input>
