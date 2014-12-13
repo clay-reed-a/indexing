@@ -39,9 +39,12 @@ angular.module('indexingApp')
       var db = $scope.database; 
       for (var w = 0; w < words.length; w++) {
         var word = words[w];
-        if (db[word]) {
-          // what to do? 
-          console.log(db[word]);
+        var entry = db[word]; 
+        if (entry) {
+          for (var d = 0; d < entry.length; d++) {
+            var data = entry[d];
+            console.log(data.page + '-' + data.position);
+          }
         }
       }
     };
