@@ -12,6 +12,7 @@ angular.module('indexingApp')
  
 
     var indexWebPages = function(theWeb) {
+      // takes a web array & returns a database object  
       var db = {}; 
       for (var n = 0; n < theWeb.length; n++) {
         var page = theWeb[n];
@@ -35,15 +36,38 @@ angular.module('indexingApp')
     };
 
     $scope.database = indexWebPages($scope.$parent.pages);
-
+    $scope.databaseIndex = Object.keys($scope.database);
     $scope.queryWords = Object.keys($scope.database);
 
     $scope.searchWeb = function(query) {
       if (query) {
-        $scope.queryWords = query.split(' '); 
+        var words = query.split(' ');
+        var allRelevantEntries = [];
+        for (var w = 0; w < words.length; w++) {
+          var word = words[w];
+          var wordEntries = getEntriesForWord(word);
+          for (var e = 0; e < wordEntries.length; e++) {
+            var entry = wordEntries[e];
+            allRelevantEntries.push(entry);
+          }
+          console.log(allRelevantEntries);
+          $scope.queryWords = allRelevantEntries;
+        }
       } else {
         $scope.queryWords = Object.keys($scope.database);
       }
+    };
+
+    var getEntriesForWord = function(word) {
+      var entries = [];
+      var dbIndex = $scope.databaseIndex;
+      for (var i = 0; i < dbIndex.length; i++) {
+        var dbEntryName = dbIndex[i]; 
+        if (dbEntryName.indexOf(word) == 0) {
+          entries.push(dbEntryName);
+        }
+      }
+      return entries; 
     };
 
     $scope.$on('pages-added', function() {
