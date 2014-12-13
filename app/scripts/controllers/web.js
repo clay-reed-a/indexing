@@ -19,9 +19,10 @@ angular.module('indexingApp')
     $scope.authorWebPage = function(newPage) {
       newPage = newPage.toLowerCase();
       $scope.pages.push(newPage);
+      $scope.newPage = '';
     };
 
-   
+
 
     $scope.$watchCollection('pages', function(newVal, oldVal) {
       if (newVal !== oldVal) {

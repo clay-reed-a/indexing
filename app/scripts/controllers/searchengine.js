@@ -70,7 +70,13 @@ angular.module('indexingApp')
       return entries; 
     };
 
-    $scope.$on('pages-added', function() {
+    $scope.$on('pages-added', function() {  
       $scope.database = indexWebPages($scope.$parent.pages);
+      $scope.databaseIndex = Object.keys($scope.database);
+      if (!$scope.query) {
+        $scope.queryWords = $scope.databaseIndex;
+      } else {
+        $scope.searchWeb($scope.query);
+      }       
     });
   });
