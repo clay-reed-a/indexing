@@ -34,22 +34,17 @@ angular.module('indexingApp')
       return db; 
     };
 
+    $scope.database = indexWebPages($scope.$parent.pages);
+
+    $scope.queryWords = Object.keys($scope.database);
+
     $scope.searchWeb = function(query) {
-      var words = query.split(' ');
-      var db = $scope.database; 
-      for (var w = 0; w < words.length; w++) {
-        var word = words[w];
-        var entry = db[word]; 
-        if (entry) {
-          for (var d = 0; d < entry.length; d++) {
-            var data = entry[d];
-            console.log(data.page + '-' + data.position);
-          }
-        }
+      if (query) {
+        $scope.queryWords = query.split(' '); 
+      } else {
+        $scope.queryWords = Object.keys($scope.database);
       }
     };
-
-    $scope.database = indexWebPages($scope.$parent.pages);
 
     $scope.$on('pages-added', function() {
       $scope.database = indexWebPages($scope.$parent.pages);

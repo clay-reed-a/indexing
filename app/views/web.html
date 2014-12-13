@@ -28,10 +28,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat-start="(word, entry) in database">
+        <tr ng-repeat-start="(word, entry) in database"  ng-show="queryWords.indexOf(word) != -1">
           <th>{{word}}</th><th></th><th></th>
         </tr>
-        <tr ng-repeat="data in entry">
+        <tr ng-repeat="data in entry" ng-show="queryWords.indexOf(word) != -1">
           <td>
           
           </td>
