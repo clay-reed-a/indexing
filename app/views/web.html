@@ -19,7 +19,7 @@
   </div>
   <div ng-controller="SearchengineCtrl" class="web__half">
     <h2>A Search Engine</h2>
-    <input>
+    <input ng-model="query" ng-change="searchWeb(query)">
     <h3>Its Database</h3>
     <table class="table table-condensed">
       <thead>
