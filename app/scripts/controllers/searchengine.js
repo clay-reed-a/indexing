@@ -50,11 +50,12 @@ angular.module('indexingApp')
             var entry = wordEntries[e];
             allRelevantEntries.push(entry);
           }
-          console.log(allRelevantEntries);
           $scope.queryWords = allRelevantEntries;
+          $scope.$parent.relevantPages = getRelevantPages();
         }
       } else {
         $scope.queryWords = Object.keys($scope.database);
+        $scope.$parent.relevantPages = getRelevantPages();
       }
     };
 
@@ -69,6 +70,25 @@ angular.module('indexingApp')
       }
       return entries; 
     };
+
+    
+
+    var getRelevantPages = function() {
+      var words = $scope.queryWords;
+      var relevantPages = [];
+      for (var q = 0; q < words.length; q++) {
+        var word = words[q];
+        var entries = $scope.database[word];
+        for (var e = 0; e < entries.length; e++) {
+          var entry = entries[e]; 
+          relevantPages.push(entry.page-1);
+        } 
+      }
+      console.log(relevantPages);
+      return relevantPages;
+    }; 
+
+    $scope.$parent.relevantPages = getRelevantPages();
 
     $scope.$on('pages-added', function() {  
       $scope.database = indexWebPages($scope.$parent.pages);
