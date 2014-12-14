@@ -47,17 +47,22 @@ angular.module('indexingApp')
 
     $scope.searchWeb = function(query) {
       if (query) {
+        var allRelevantEntries = [];
         var phraseQueries = query.match(/"[\w\s]*"/g);
 
         if (phraseQueries) {
           for (var p = 0; p < phraseQueries.length; p++) {
             var phraseQuery = phraseQueries[p].replace(/"/g, '');
+
+            query = query.replace(phraseQueries[p], '');
+   
             var phraseWords = phraseQuery.split(' ');
  
             var phraseWordsEntries = getEntriesForAll(phraseWords);
 
-            var matchPages = [];
+            var phraseQueryMatchPages = [];
             for (var m = 0; m < phraseWordsEntries.length; m++) {
+              allRelevantEntries.push(phraseWords[m]);
               var phraseWordEntry = phraseWordsEntries[m];
               for (var t = 0; t < phraseWordEntry.length-1; t++) {
                 var phraseWordOcc = phraseWordEntry[t]; 
@@ -86,32 +91,51 @@ angular.module('indexingApp')
                 }
 
                 if (pageIsMatch) {
-                  matchPages.push(page);
+                  phraseQueryMatchPages.push(page-1);
                 }
               }
             }
           }
         }
 
-        console.log(matchPages);
+        console.log(phraseQueryMatchPages);
 
         var words = query.split(' ');
-        var allRelevantEntries = [];
-        for (var w = 0; w < words.length; w++) {
-          var word = words[w];
-          var wordEntries = getEntriesForWord(word);
-          for (var e = 0; e < wordEntries.length; e++) {
-            var entry = wordEntries[e];
-            allRelevantEntries.push(entry);
+        if (words[0] !== '') {
+          for (var w = 0; w < words.length; w++) {
+            var word = words[w];
+            var wordEntries = getEntriesForWord(word);
+            for (var e = 0; e < wordEntries.length; e++) {
+              var entry = wordEntries[e];
+              allRelevantEntries.push(entry);
+            }
           }
-          $scope.queryWords = allRelevantEntries;
-          $scope.$parent.relevantPages = getRelevantPages();
         }
+        
+        $scope.queryWords = allRelevantEntries;
+
+        
+        if (phraseQueries) {
+          var a = getRelevantPages();
+          console.log(a);
+          var b = phraseQueryMatchPages; 
+          console.log(b);
+          var r = intersection(a, b);
+          console.log(r);
+        } else {
+          var r = getRelevantPages();
+        }
+        
+        $scope.$parent.relevantPages = r;
+        
       } else {
         $scope.queryWords = Object.keys($scope.database);
-        $scope.$parent.relevantPages = getRelevantPages();
+        $scope.$parent.relevantPages = showAllPages();
+
       }
+
     };
+
 
     var getEntriesForWord = function(word) {
       var entries = [];
@@ -125,23 +149,63 @@ angular.module('indexingApp')
       return entries; 
     };
 
-    
+    var showAllPages = function() {
+      var i = -1; 
+      return $scope.$parent.pages.map(function(item) {
+        i++ 
+        return i; 
+      }); 
+    };
 
     var getRelevantPages = function() {
       var words = $scope.queryWords;
       var relevantPages = [];
       for (var q = 0; q < words.length; q++) {
+        var wordPages = [];
         var word = words[q];
         var entries = $scope.database[word];
         for (var e = 0; e < entries.length; e++) {
           var entry = entries[e]; 
-          relevantPages.push(entry.page-1);
-        } 
+          wordPages.push(entry.page-1);
+        }
+        relevantPages.push(wordPages);
       }
-      return relevantPages;
+      console.log(relevantPages);
+      var r = indeterminateIntersection(relevantPages);
+      console.log(r);
+      return r;
     }; 
 
-    $scope.$parent.relevantPages = getRelevantPages();
+    var indeterminateIntersection = function(twoArray) {
+      if (twoArray.length > 2) {
+        var firstArray = twoArray.shift();
+        var lastArray = twoArray.pop(); 
+        var intersectionThereof = intersection(firstArray, lastArray);
+        twoArray.push(intersectionThereof);
+        return indeterminateIntersection(twoArray);
+      } else if (twoArray.length == 2) {
+        return intersection(twoArray.shift(), twoArray.pop()); 
+      } else {
+        return twoArray[0];
+      }
+    };
+
+    var intersection = function(a, b) {
+      var r = a.filter(function(e) {
+        var eInB = false; 
+        for (var i = 0; i < b.length; i++) {
+          if (e == b[i]) {
+            eInB = true; 
+          }
+        }
+        return eInB;
+      });
+
+      return r;
+    };
+
+    $scope.$parent.relevantPages = showAllPages();
+
 
     $scope.$on('pages-added', function() {  
       $scope.database = indexWebPages($scope.$parent.pages);
