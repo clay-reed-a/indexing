@@ -51,6 +51,7 @@ angular.module('indexingApp')
         var phraseQueries = query.match(/"[\w\s]*"/g);
 
         if (phraseQueries) {
+          
           for (var p = 0; p < phraseQueries.length; p++) {
             var phraseQuery = phraseQueries[p].replace(/"/g, '');
 
@@ -98,7 +99,7 @@ angular.module('indexingApp')
           }
         }
 
-        console.log(phraseQueryMatchPages);
+  
 
         var words = query.split(' ');
         if (words[0] !== '') {
@@ -117,11 +118,11 @@ angular.module('indexingApp')
         
         if (phraseQueries) {
           var a = getRelevantPages();
-          console.log(a);
+  
           var b = phraseQueryMatchPages; 
-          console.log(b);
+
           var r = intersection(a, b);
-          console.log(r);
+
         } else {
           var r = getRelevantPages();
         }
@@ -170,9 +171,9 @@ angular.module('indexingApp')
         }
         relevantPages.push(wordPages);
       }
-      console.log(relevantPages);
+
       var r = indeterminateIntersection(relevantPages);
-      console.log(r);
+
       return r;
     }; 
 
