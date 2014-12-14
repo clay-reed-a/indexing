@@ -3,15 +3,15 @@
     <h2>The Web</h2>
     <section id="author-pages">
       <h3>Write a Web Page</h3>
-      <textarea ng-model="newPage"></textarea>
-      <button ng-click="authorWebPage(newPage)">Host It!</button>
+      <textarea ng-model="pageText"></textarea>
+      <button ng-click="authorWebPage(pageText)">Host It!</button>
     </section> 
     <section id="pages">
       <h3>All the Pages on the Web</h3>
       <ol>
         <li class="web-page" ng-repeat="page in pages" ng-show="relevantPages.indexOf($index) != -1">
           <div>
-            <p>{{page}}</p>
+            <p>{{page.text}}</p>
           </div>
         </li>
       </ol>

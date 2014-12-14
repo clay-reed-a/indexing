@@ -15,7 +15,7 @@ angular.module('indexingApp')
       // takes a web array & returns a database object  
       var db = {}; 
       for (var n = 0; n < theWeb.length; n++) {
-        var page = theWeb[n];
+        var page = theWeb[n].text;
         var words = page.split(' '); 
         for (var pos = 0; pos < words.length; pos++) {
           var word = words[pos];
@@ -39,8 +39,62 @@ angular.module('indexingApp')
     $scope.databaseIndex = Object.keys($scope.database);
     $scope.queryWords = Object.keys($scope.database);
 
+    var getEntriesForAll = function(words) {
+      return words.map(function(word) {
+        return $scope.database[word];
+      });
+    };
+
     $scope.searchWeb = function(query) {
       if (query) {
+        var phraseQueries = query.match(/"[\w\s]*"/g);
+
+        if (phraseQueries) {
+          for (var p = 0; p < phraseQueries.length; p++) {
+            var phraseQuery = phraseQueries[p].replace(/"/g, '');
+            var phraseWords = phraseQuery.split(' ');
+ 
+            var phraseWordsEntries = getEntriesForAll(phraseWords);
+
+            var matchPages = [];
+            for (var m = 0; m < phraseWordsEntries.length; m++) {
+              var phraseWordEntry = phraseWordsEntries[m];
+              for (var t = 0; t < phraseWordEntry.length-1; t++) {
+                var phraseWordOcc = phraseWordEntry[t]; 
+                var page = phraseWordOcc.page;
+                var pos = phraseWordOcc.position;
+                
+                var nextPos = pos+1; 
+                
+                var pageIsMatch = true; 
+                for (var c = m+1; c < phraseWordsEntries.length; c++, nextPos++) {
+                  var nextPhraseWordEntry = phraseWordsEntries[c];
+  
+                  for (var v = 0; v < nextPhraseWordEntry.length; v++) {
+                    var nextPhraseWordOcc = nextPhraseWordEntry[v];
+                    var currentPage = nextPhraseWordOcc.page; 
+                    var currentPos = nextPhraseWordOcc.position;
+
+                    var samePage = page == currentPage;
+                    var directlyFollows = (nextPos == currentPos); 
+
+                    
+                    if (!(samePage && directlyFollows)) {
+                      pageIsMatch = false; 
+                    }
+                  }  
+                }
+
+                if (pageIsMatch) {
+                  matchPages.push(page);
+                }
+              }
+            }
+          }
+        }
+
+        console.log(matchPages);
+
         var words = query.split(' ');
         var allRelevantEntries = [];
         for (var w = 0; w < words.length; w++) {
@@ -84,7 +138,6 @@ angular.module('indexingApp')
           relevantPages.push(entry.page-1);
         } 
       }
-      console.log(relevantPages);
       return relevantPages;
     }; 
 
@@ -97,6 +150,7 @@ angular.module('indexingApp')
         $scope.searchWeb($scope.query);
       } else {
         $scope.queryWords = $scope.databaseIndex;
-      }       
+      }
+      $scope.$parent.relevantPages = getRelevantPages();       
     });
   });
